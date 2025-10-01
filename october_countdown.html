@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>October Countdown</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .countdown {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .countdown h2 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            min-width: 100px;
+        }
+
+        .time-unit .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .time-unit .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .day-label {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .day.past {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .day.today {
+            background: #ffd700;
+            border-color: #ffa500;
+            animation: pulse 2s infinite;
+        }
+
+        .day.special {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border-color: #ff6b6b;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .day-number {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .day-emoji {
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        .message {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 1.2em;
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .calendar {
+                gap: 8px;
+                padding: 15px;
+            }
+            
+            .day-number {
+                font-size: 1.2em;
+            }
+            
+            .time-unit {
+                padding: 15px 20px;
+                min-width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎃 October 2025 🎃</h1>
+            <p>Counting down to something special...</p>
+        </div>
+
+        <div class="countdown">
+            <h2>Time Until October 31st</h2>
+            <div class="time-display">
+                <div class="time-unit">
+                    <span class="number" id="days">0</span>
+                    <span class="label">Days</span>
+                </div>
+                <div class="time-unit">
+                    <span class="number" id="hours">0</span>
+                    <span class="label">Hours</span>
+                </div>
+                <div class="time-unit">
+                    <span class="number" id="minutes">0</span>
+                    <span class="label">Minutes</span>
+                </div>
+                <div class="time-unit">
+                    <span class="number" id="seconds">0</span>
+                    <span class="label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar" id="calendar"></div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        const calendar = document.getElementById('calendar');
+        const daysLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        // Create day labels
+        daysLabels.forEach(label => {
+            const dayLabel = document.createElement('div');
+            dayLabel.className = 'day-label';
+            dayLabel.textContent = label;
+            calendar.appendChild(dayLabel);
+        });
+
+        // Get current date
+        const now = new Date();
+        const currentDay = now.getDate();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        // October 2025 starts on Wednesday (day 3)
+        const firstDay = 3;
+        const daysInMonth = 31;
+
+        // Add empty cells for days before October 1st
+        for (let i = 0; i < firstDay; i++) {
+            const emptyDay = document.createElement('div');
+            calendar.appendChild(emptyDay);
+        }
+
+        // Create calendar days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'day';
+            
+            const dayNumber = document.createElement('div');
+            dayNumber.className = 'day-number';
+            dayNumber.textContent = day;
+            
+            const emoji = document.createElement('div');
+            emoji.className = 'day-emoji';
+            
+            // Mark past days
+            if (currentMonth === 9 && day < currentDay) {
+                dayDiv.classList.add('past');
+                emoji.textContent = '✓';
+            }
+            // Mark today
+            else if (currentMonth === 9 && day === currentDay) {
+                dayDiv.classList.add('today');
+                emoji.textContent = '⭐';
+            }
+            // Mark October 31st
+            else if (day === 31) {
+                dayDiv.classList.add('special');
+                emoji.textContent = '❤️';
+            }
+            
+            dayDiv.appendChild(dayNumber);
+            dayDiv.appendChild(emoji);
+            calendar.appendChild(dayDiv);
+        }
+
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const target = new Date('2025-10-31T00:00:00');
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                document.getElementById('message').textContent = '🎉 Today is the day! 🎉';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+
+            // Update message based on days remaining
+            const messageEl = document.getElementById('message');
+            if (days === 0) {
+                messageEl.textContent = '🥳 It\'s almost time! See you soon!';
+            } else if (days === 1) {
+                messageEl.textContent = '💫 Just one more day!';
+            } else if (days <= 7) {
+                messageEl.textContent = '✨ Less than a week to go!';
+            } else {
+                messageEl.textContent = `💝 ${days} days until you see each other!`;
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
